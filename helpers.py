@@ -21,3 +21,10 @@ def ask_for_years_range(years):
 
     return list_int_to_list_string(input_years)
 
+
+def normalize(values, lower, upper):
+    max_value = max(values)
+    min_value = min(values)
+    if(max_value == min_value):
+        return upper + lower / 2
+    return [lower + (x - min_value) * (upper - lower) / (max_value - min_value) for x in values]

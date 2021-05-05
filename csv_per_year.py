@@ -15,7 +15,9 @@ for year in read_dictionary.keys():
         read_dictionary[year]['clique_number'], 
         read_dictionary[year]['diameter'],
         read_dictionary[year]['clustering_coefficient'],
-        read_dictionary[year]['max_degree']
+        read_dictionary[year]['average_degree'],
+        read_dictionary[year]['max_degree'],
+        read_dictionary[year]['vertices-without-links']
         ])
 
 with open('table_years.csv', 'w', newline='') as file:

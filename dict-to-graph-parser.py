@@ -49,6 +49,7 @@ for year in years:
                     # Add if it doesn't exist.
                     g.add_edge(index_array[i],index_array[j])
 
+    g.vs['degree'] = g.degree()
     if (option == 1):
         year_dict_with_graph_prop[year] = { 
             'vertices': len(g.vs['name']),
@@ -56,10 +57,10 @@ for year in years:
             'clique_number': g.clique_number(),
             'diameter': g.diameter(),
             'clustering_coefficient': g.transitivity_undirected(),
-            'max_degree': max(g.degree()),
+            'average_degree': max(g.vs['degree']),
+            'max_degree': max(g.vs['degree']),
             'vertices-without-links': len(g.vs.select(lambda vertex: vertex.degree() == 0))
         }
-    g.vs['degree'] = g.degree()
     
     else: 
         # g.write_pickle(f'graph/graph_{year}')

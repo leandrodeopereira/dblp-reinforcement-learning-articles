@@ -8,6 +8,16 @@ def list_int_to_list_string(list_int):
     string_map = map(str, list_int)
     return list(string_map)
 
+def ask_for_option():
+    print("1. Generate table")
+    print("2. Generate plots")
+    option = int(input("Which option 1 or 2:"))
+
+    if option not in [1,2]:
+        exit('Error: Invalid option.')
+
+    return option
+
 def ask_for_years_range(years):
     max_allowed = f'{min(years)}-{max(years)}'
     print(f"Range allowed: '{max_allowed}' or 'a' for all")

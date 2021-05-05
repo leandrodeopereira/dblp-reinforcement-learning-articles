@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import string_to_range, ask_for_years_range, normalize
+from helpers import string_to_range, ask_for_option, ask_for_years_range, normalize
 from igraph import *
 from igraph.drawing.text import TextDrawer
 import cairo
@@ -19,7 +19,8 @@ visual_style["margin"] = 65
 # Initialize dictionary
 read_dictionary = np.load('result-final.npy',allow_pickle='TRUE').item()
 
-years = ask_for_years_range(read_dictionary.keys())
+option = ask_for_option()
+years = read_dictionary.keys() if option == 1 else ask_for_years_range(read_dictionary.keys())
 year_dict_with_graph_prop = dict()
 
 for year in years:
@@ -48,37 +49,39 @@ for year in years:
                     # Add if it doesn't exist.
                     g.add_edge(index_array[i],index_array[j])
 
-    
-#     year_dict_with_graph_prop[year] = { 
-#         'vertices': len(g.vs['name']),
-#         'links': len(g.get_edgelist()),
-#         'clique_number': g.clique_number(),
-#         'diameter': g.diameter(),
-#         'clustering_coefficient': g.transitivity_undirected(),
-#         'max_degree': max(g.degree()),
-#         'vertices-without-links': len(g.vs.select(lambda vertex: vertex.degree() == 0))
-#     }
-
-# np.save('year_dict_with_graph_prop.npy', year_dict_with_graph_prop)
+    if (option == 1):
+        year_dict_with_graph_prop[year] = { 
+            'vertices': len(g.vs['name']),
+            'links': len(g.get_edgelist()),
+            'clique_number': g.clique_number(),
+            'diameter': g.diameter(),
+            'clustering_coefficient': g.transitivity_undirected(),
+            'max_degree': max(g.degree()),
+            'vertices-without-links': len(g.vs.select(lambda vertex: vertex.degree() == 0))
+        }
     g.vs['degree'] = g.degree()
     
-    # g.write_pickle(f'graph/graph_{year}')
-    visual_style["layout"] = g.layout_kamada_kawai()
-    visual_style["vertex_label"] = g.vs["name"]
-    visual_style["vertex_color"] = ['red' if degree != 0 else 'gray' for degree in g.vs["degree"]]
-    visual_style["vertex_label_size"] = normalize(g.vs['degree'], 2, 20) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
-    visual_style["vertex_size"] = normalize(g.vs['degree'], 5, 15) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
-    visual_style["vertex_frame_width"] = 0.5
-    visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
-    visual_style["bbox"] = (700, 700)
+    else: 
+        # g.write_pickle(f'graph/graph_{year}')
+        visual_style["layout"] = g.layout_kamada_kawai()
+        visual_style["vertex_label"] = g.vs["name"]
+        visual_style["vertex_color"] = ['red' if degree != 0 else 'gray' for degree in g.vs["degree"]]
+        visual_style["vertex_label_size"] = normalize(g.vs['degree'], 2, 20) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
+        visual_style["vertex_size"] = normalize(g.vs['degree'], 5, 15) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
+        visual_style["vertex_frame_width"] = 0.5
+        visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
+        visual_style["bbox"] = (700, 700)
 
-    plot = plot(g, f'plots/{year}.png', **visual_style)
+        plot = plot(g, f'plots/{year}.png', **visual_style)
 
-    plot.redraw()
+        plot.redraw()
 
-    ctx = cairo.Context(plot.surface)
-    ctx.set_font_size(36)
-    drawer = TextDrawer(ctx, f"{year}", halign=TextDrawer.CENTER)
-    drawer.draw_at(0, 40, width=700)
+        ctx = cairo.Context(plot.surface)
+        ctx.set_font_size(36)
+        drawer = TextDrawer(ctx, f"{year}", halign=TextDrawer.CENTER)
+        drawer.draw_at(0, 40, width=700)
 
-    plot.save()
+        plot.save()
+
+if(option == 1):
+    np.save('year_dict_with_graph_prop.npy', year_dict_with_graph_prop)

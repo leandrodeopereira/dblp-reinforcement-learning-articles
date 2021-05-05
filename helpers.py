@@ -13,7 +13,7 @@ def ask_for_years_range(years):
     print(f"Range allowed: '{max_allowed}' or 'a' for all")
     str_range = input("Enter the year range: ")
     if str_range == 'a':
-        str_range = max_allowed
+        return years
     input_years = string_to_range(str_range)
 
     if min(input_years) < int(min(years)) and max(input_years) > int(max(years)):

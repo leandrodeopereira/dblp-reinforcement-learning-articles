@@ -68,6 +68,6 @@ for year in years:
     visual_style["vertex_size"] = normalize(g.vs['degree'], 5, 15) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
     visual_style["vertex_frame_width"] = 0.5
     visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
-    visual_style["bbox"] = (1000, 1000) if len(g.vs['name']) > 75 else (700, 700)
+    visual_style["bbox"] = (700, 700)
 
     plot(g, f'plots/{year}.png', **visual_style)

@@ -18,8 +18,6 @@ for year in read_dictionary.keys():
         read_dictionary[year]['max_degree']
         ])
 
-
-
 with open('table_years.csv', 'w', newline='') as file:
     writer = csv.writer(file, delimiter=';')
     writer.writerows(data_list)

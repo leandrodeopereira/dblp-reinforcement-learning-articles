@@ -15,8 +15,7 @@ for article in doc['dblp']['article']:
     try:
         # In some cases the title can be a dictionary, just convert to string.
         title = str(article['title'])
-        if (re.search('reinforcement learning', title, re.IGNORECASE) 
-            or re.search('reinforcement-learning', title, re.IGNORECASE)):
+        if (re.search('reinforcement', title, re.IGNORECASE) and re.search('learning', title, re.IGNORECASE)):
             authors = []
             if isinstance(article['author'], str):
                 authors.append(article['author'])

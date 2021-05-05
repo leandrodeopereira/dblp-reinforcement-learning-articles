@@ -1,6 +1,8 @@
 import numpy as np
 from helpers import string_to_range, ask_for_years_range, normalize
 from igraph import *
+from igraph.drawing.text import TextDrawer
+import cairo
 
 # Layouts and plotting
 
@@ -70,4 +72,13 @@ for year in years:
     visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
     visual_style["bbox"] = (700, 700)
 
-    plot(g, f'plots/{year}.png', **visual_style)
+    plot = plot(g, f'plots/{year}.png', **visual_style)
+
+    plot.redraw()
+
+    ctx = cairo.Context(plot.surface)
+    ctx.set_font_size(36)
+    drawer = TextDrawer(ctx, f"{year}", halign=TextDrawer.CENTER)
+    drawer.draw_at(0, 40, width=700)
+
+    plot.save()

@@ -19,5 +19,5 @@ for year in read_dictionary.keys():
         ])
 
 with open('table_years.csv', 'w', newline='') as file:
-    writer = csv.writer(file, delimiter=';')
+    writer = csv.writer(file)
     writer.writerows(data_list)

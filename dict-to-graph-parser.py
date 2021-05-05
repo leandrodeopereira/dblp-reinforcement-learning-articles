@@ -12,7 +12,6 @@ visual_style["vertex_label_dist"] = 1
 visual_style["edge_width"] = 0.5 #[1 + 2 * int(is_formal) for is_formal in g.es["is_formal"]]
 visual_style["edge_color"] = 'red'
 #visual_style["bbox"] = (600, 600)
-visual_style["margin"] = 65
 
 # Initialize dictionary
 read_dictionary = np.load('result-final.npy',allow_pickle='TRUE').item()
@@ -67,6 +66,7 @@ for year in years:
     visual_style["vertex_label_size"] = normalize(g.vs['degree'], 2, 20) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
     visual_style["vertex_size"] = normalize(g.vs['degree'], 5, 15) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
     visual_style["vertex_frame_width"] = 0
+    visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
     visual_style["bbox"] = (1000, 1000) if len(g.vs['name']) > 75 else (700, 700)
 
     plot(g, f'plots/{year}.png', **visual_style)

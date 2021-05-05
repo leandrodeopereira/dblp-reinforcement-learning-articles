@@ -40,4 +40,4 @@ for article in doc['dblp']['article']:
 print("--- %s seconds ---" % (time.time() - start_time))
 
 read_dict_sorted = collections.OrderedDict(sorted(dic.items()))
-np.save('result-correct-title.npy', read_dict_sorted)
+np.save('result-final.npy', read_dict_sorted)

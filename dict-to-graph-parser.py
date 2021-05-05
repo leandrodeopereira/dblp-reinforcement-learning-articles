@@ -15,7 +15,7 @@ visual_style["edge_color"] = 'red'
 visual_style["margin"] = 65
 
 # Initialize dictionary
-read_dictionary = np.load('result-correct-title.npy',allow_pickle='TRUE').item()
+read_dictionary = np.load('result-final.npy',allow_pickle='TRUE').item()
 
 years = ask_for_years_range(read_dictionary.keys())
 year_dict_with_graph_prop = dict()

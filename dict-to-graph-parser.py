@@ -56,24 +56,32 @@ for year in years:
             'links': len(g.get_edgelist()),
             'clique_number': g.clique_number(),
             'diameter': g.diameter(),
-            'clustering_coefficient': g.transitivity_undirected(),
-            'average_degree': max(g.vs['degree']),
+            'clustering_coefficient': g.transitivity_undirected(mode='zero'),
+            'average_degree': mean(g.vs['degree']),
             'max_degree': max(g.vs['degree']),
             'vertices-without-links': len(g.vs.select(lambda vertex: vertex.degree() == 0))
         }
     
     else: 
+        average_degree = mean(g.vs['degree'])
+        # Delete vertices degree equals to 0
+        g.delete_vertices(g.vs.select(lambda vertex: vertex.degree() == 0)['name'])
+
+        
         # g.write_pickle(f'graph/graph_{year}')
         visual_style["layout"] = g.layout_kamada_kawai()
         visual_style["vertex_label"] = g.vs["name"]
-        visual_style["vertex_color"] = ['red' if degree != 0 else 'gray' for degree in g.vs["degree"]]
+        visual_style["vertex_color"] = ['red' if degree >= average_degree else 'gray' for degree in g.vs["degree"]]
+        visual_style["edge_color"] = ['red' if g.vs[edge[0]]['degree'] >= average_degree and g.vs[edge[1]]['degree'] >= average_degree else 'gray' for edge in g.get_edgelist()]
         visual_style["vertex_label_size"] = normalize(g.vs['degree'], 2, 20) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
         visual_style["vertex_size"] = normalize(g.vs['degree'], 5, 15) if len(g.vs['name']) > 75 else normalize(g.vs['degree'], 10, 15)
         visual_style["vertex_frame_width"] = 0.5
-        visual_style["margin"] = 90 if len(g.vs) <= 2 else 65
+        visual_style["margin"] = 100 if len(g.vs) <= 10 else 65
         visual_style["bbox"] = (700, 700)
 
-        plot = plot(g, f'plots/{year}.png', **visual_style)
+        #plot = plot(g, f'plots/{year}.png', **visual_style)
+        plot = Plot(f'plots/{year}.png',bbox=(700, 700), background="white")
+        plot.add(g, **visual_style)
 
         plot.redraw()
 
